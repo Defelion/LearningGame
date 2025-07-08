@@ -10,12 +10,6 @@ An educational game that transforms learning into an engaging experience. This p
   - [Core Concept](#core-concept)
   - [Gameplay Loop](#gameplay-loop)
 - [Key Features](#key-features)
-- [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Testing](#testing)
 - [License](#license)
 
 ## About The Project
