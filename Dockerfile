@@ -2,15 +2,21 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
+# 1. Copy package manifests for dependency caching
 COPY package.json pnpm-lock.yaml ./
+
+# 2. Install dependencies
 RUN npm install -g pnpm
 RUN pnpm install --frozen-lockfile
 
-# Add this line to fix file permissions
-RUN chmod -R +x /app/node_modules/.bin
-
+# 3. Copy the rest of your application source code
+# This ensures tsconfig.json and all other files are available
 COPY . .
-RUN pnpm build
+
+# 4. Run the build steps directly with the node executable
+# This bypasses any shell or file permission issues with the scripts.
+RUN node /app/node_modules/vue-tsc/bin/vue-tsc.js --build --force
+RUN node /app/node_modules/vite/bin/vite.js build
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:1.27-alpine
