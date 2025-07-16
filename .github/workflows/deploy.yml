@@ -1,0 +1,24 @@
+name: Deploy LearningGame to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd /home/defelion/server/Helonsha
+            git pull origin main
+            docker-compose -f /home/defelion/server/Helonsha/docker-compose.yml up -d --build learning_game_app
+            docker-compose -f /home/defelion/server/Helonsha/docker-compose.yml exec main_reverse_proxy nginx -s reload
